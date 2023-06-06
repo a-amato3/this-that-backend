@@ -1,73 +1,67 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+## Backend in NestJS
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+# Create an Entity Relationship Diagram (ERD) detailing your schema design
+Please check the 'ERD.png'
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+# Write SQL queries to implement your schema design
 
-## Description
+Please check the sql scripts in the sql directory.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+# Create a NestJS DTO for updating a character’s known accomplices
 
-## Installation
+Please check the'update-accomplices.dto' file.
 
-```bash
-$ npm install
+# Write brief notes describing how you would implement an endpoint that accepts your DTO in the request body and would update the known accomplices in your database.
+
+To implement an endpoint that accepts the UpdateCharacterAccomplicesDTO in the request body and updates the known accomplices the following steps are required:
+
+* Create a new endpoint in your NestJS controller that handles the HTTP PUT request.
+
+For example:
+```
+@Put(':id/accomplices')
+async updateCharacterAccomplices(
+  @Param('id') id: number,
+  @Body() updateCharacterAccomplicesDTO: UpdateCharacterAccomplicesDTO,
+): Promise<void> {
+  // Update method
+}
 ```
 
-## Running the app
+* Inside the updateCharacterAccomplices method, you can extract the characterId and accompliceIds from the DTO.
 
-```bash
-# development
-$ npm run start
+* Validate the DTO using the class-validator library to ensure the data meets the specified validation rules. If validation fails, return an appropriate HTTP response with the validation errors.
 
-# watch mode
-$ npm run start:dev
+* Use a service class or repository to update the known accomplices for the character in the database. This can involve querying the existing records, making modifications based on the DTO, and persisting the changes.
 
-# production mode
-$ npm run start:prod
+* Handle any errors that may occur during the database update process and return an appropriate HTTP response.
+
+* If the update is successful, it will return a HTTP success response indicating that the known accomplices have been updated.
+
+Sample implementation of the updateCharacterAccomplices method:
+```
+@Put(':id/accomplices')
+async updateCharacterAccomplices(
+  @Param('id') id: number,
+  @Body() updateCharacterAccomplicesDTO: UpdateCharacterAccomplicesDTO,
+): Promise<void> {
+  const { characterId, accompliceIds } = updateCharacterAccomplicesDTO;
+
+  // Validate the DTO
+  const errors = await validate(updateCharacterAccomplicesDTO);
+  if (errors.length > 0) {
+    throw new BadRequestException(errors);
+  }
+
+  try {
+    // Update the known accomplices in the database
+    await this.characterService.updateAccomplices(characterId, accompliceIds);
+  } catch (error) {
+    // Handle database update errors
+    throw new InternalServerErrorException('Failed to update known accomplices');
+  }
+}
 ```
 
-## Test
+In this example, characterService is a service class responsible for handling interactions with the database. The updateAccomplices method can be implemented in the service to perform the necessary database operations.
 
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).

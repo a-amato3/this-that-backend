@@ -1,0 +1,5 @@
+CREATE TABLE Enemy (
+  id SERIAL PRIMARY KEY,
+  character_id INTEGER REFERENCES Character(id) ON DELETE CASCADE,
+  enemy_id INTEGER REFERENCES Character(id) ON DELETE CASCADE
+);

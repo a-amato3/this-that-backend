@@ -1,0 +1,7 @@
+CREATE TABLE Character (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  gender VARCHAR(10) NOT NULL,
+  age INTEGER NOT NULL,
+  film_status BOOLEAN NOT NULL
+);
