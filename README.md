@@ -1,17 +1,17 @@
-## Backend in NestJS
+# Backend in NestJS
 
-# Create an Entity Relationship Diagram (ERD) detailing your schema design
+## Create an Entity Relationship Diagram (ERD) detailing your schema design
 Please check the 'ERD.png'
 
-# Write SQL queries to implement your schema design
+## Write SQL queries to implement your schema design
 
 Please check the sql scripts in the sql directory.
 
-# Create a NestJS DTO for updating a character’s known accomplices
+## Create a NestJS DTO for updating a character’s known accomplices
 
 Please check the'update-accomplices.dto' file.
 
-# Write brief notes describing how you would implement an endpoint that accepts your DTO in the request body and would update the known accomplices in your database.
+## Write brief notes describing how you would implement an endpoint that accepts your DTO in the request body and would update the known accomplices in your database.
 
 To implement an endpoint that accepts the UpdateCharacterAccomplicesDTO in the request body and updates the known accomplices the following steps are required:
 
